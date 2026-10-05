@@ -1,0 +1,73 @@
+// Use DBML to define your database structure
+// Docs: https://dbml.dbdiagram.io/docs
+
+Table patients {
+  id integer [pk, not null]
+  name varchar
+  surname varchar
+  midname varchar
+  phone_number varchar
+  email varchar
+  oms varchar
+}
+
+Table doctors {
+  id integer [pk]
+  name varchar
+  surname varchar
+  midname varchar
+  phone_number varchar
+  email varchar
+  specialization varchar
+  description varchar 
+}
+
+Table slots {
+  id integer [pk, not null]
+  date_and_time timestamp
+  doctor_id integer [ref: > doctors.id, not null]
+}
+
+Table appointments {
+  id integer [pk, not null]
+  slot_id integer [ref: > slots.id, not null]
+  patient_id integer [ref: > patients.id, not null]
+  complaints text
+  description text
+  diagnosis text
+}
+
+Table prescriptions {
+  id integer [pk]
+  recommendations text
+  tests text
+  analysises text
+  appointment_id integer [ref: > appointments.id, not null]
+}
+
+Table certificates {
+  id integer [pk]
+  issuance_date date
+  illness_start date
+  illness_end date
+  doctor_id integer [ref: > doctors.id, not null]
+  patient_id integer [ref: > patients.id, not null]
+  diagnosis text
+  notes text
+}
+
+Table drugs {
+  id integer [pk]
+  prescription_id integer [ref: > prescriptions.id, not null]
+  name varchar
+  dose float
+  days integer
+  days_left integer
+}
+
+Table referrals {
+  id integer [pk]
+  doctor_id integer [ref: > doctors.id, not null]
+  issuance_date date
+  expiration_date date
+}
